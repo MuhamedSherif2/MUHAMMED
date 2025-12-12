@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import ThemeToggle from "./ToggelMode";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import Logo from '/real-logo.png';
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +19,7 @@ const Nav = () => {
       <nav className="flex justify-between items-center px-4 sm:px-6 lg:px-8 container mx-auto">
         {/* Logo */}
         <div className="flex items-center space-x-3">
-          <img src={Logo} alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
+          <img src='/real-logo.png' alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
         </div>
 
         {/* Desktop Navigation */}
