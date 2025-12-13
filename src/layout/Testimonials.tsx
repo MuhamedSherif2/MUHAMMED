@@ -1,127 +1,61 @@
-import { useEffect, useState, useContext, useRef, useCallback } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Context } from "@/context";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Testimonials = () => {
   const context = useContext(Context);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
-  // form fields
-  const [authorName, setAuthorName] = useState("");
-  const [authorEmail, setAuthorEmail] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   
-  const hasFetchedRef = useRef(false);
-  const isMountedRef = useRef(true);
-
-  const loadTestimonials = useCallback(async () => {
-    if (!context || hasFetchedRef.current || !isMountedRef.current) return;
-    
-    hasFetchedRef.current = true;
-    
-    try {
-      await context.portfolioActions.loadShowTestimonials?.();
-      if (isMountedRef.current) {
-        setError(null);
-      }
-    } catch (err: any) {
-      console.error("Error loading testimonials:", err);
-      if (isMountedRef.current) {
-        setError(err.message || "Failed to load testimonials");
-      }
-    } finally {
-      if (isMountedRef.current) {
-        setLoading(false);
-      }
-    }
-  }, [context]);
+  const testimonials = context?.showTestimonials || [];
+  const displayedTestimonials = testimonials.slice(0, 2);
 
   useEffect(() => {
-    isMountedRef.current = true;
-    
-    // تأخير الطلب لمنع التحميل المتزامن مع المكونات الأخرى
-    const timer = setTimeout(() => {
-      loadTestimonials();
-    }, 200);
+    context?.portfolioActions.loadShowTestimonials?.();
+  }, [context]);
 
-    return () => {
-      isMountedRef.current = false;
-      clearTimeout(timer);
-    };
-  }, [loadTestimonials]);
-
-  // ---- Submit Testimonial ---- //
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!context?.userToken) {
-      alert("You must be logged in to submit a testimonial.");
+      setSubmitError("Please login to submit a testimonial");
       return;
     }
-
-    if (submitting) return;
-
+    
     setSubmitting(true);
-    setError(null);
-
-    const formData = new FormData();
-    formData.append("authorName", authorName.trim());
-    formData.append("authorEmail", authorEmail.trim());
-    formData.append("message", message.trim());
-
+    setSubmitError("");
+    setSubmitSuccess(false);
+    
     try {
+      const formData = new FormData();
+      formData.append("authorName", name);
+      formData.append("authorEmail", email);
+      formData.append("message", message);
+      
       await context.portfolioActions.addNewTestimonial?.(formData);
       
-      // إعادة تحميل الشهادات بعد الإضافة
-      hasFetchedRef.current = false;
-      await loadTestimonials();
-      
       // Reset form
-      setAuthorName("");
-      setAuthorEmail("");
+      setName("");
+      setEmail("");
       setMessage("");
+      setSubmitSuccess(true);
       
-      alert("Thank you! Your testimonial is submitted and awaiting approval.");
+      // Refresh testimonials
+      context?.portfolioActions.loadShowTestimonials?.();
+      
     } catch (err: any) {
-      console.error("Submission error:", err);
-      setError(err.message || "Failed to submit testimonial. Please try again.");
+      console.error("Error submitting testimonial:", err);
+      setSubmitError(err.message || "Failed to submit testimonial. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
-
-  if (!context) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin h-12 w-12 border-4 border-[#2563EB] border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading context...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <section className='w-full bg-white dark:bg-[#0B0E1D] py-12 min-h-[400px]'>
-        <div className='w-full max-w-6xl mx-auto px-6'>
-          <h2 className='text-center font-bold text-3xl md:text-4xl text-[#111827] dark:text-[#E2E8F0] mb-3'>
-            Testimonials
-          </h2>
-          <div className="flex justify-center items-center h-64">
-            <div className="relative">
-              <div className="animate-spin h-14 w-14 border-4 border-[#2563EB] dark:border-[#4A7CFE] border-t-transparent rounded-full"></div>
-              <div className="absolute inset-0 animate-ping h-14 w-14 border-2 border-blue-300 dark:border-blue-700 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  const visibleTestimonials = context.showTestimonials || [];
-  const displayedTestimonials = visibleTestimonials.slice(0, 2);
 
   return (
     <section className='w-full bg-white dark:bg-[#0B0E1D] py-12'>
@@ -135,14 +69,22 @@ const Testimonials = () => {
             What clients say about my work
           </p>
 
-          {error && (
+          {submitSuccess && (
+            <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+              <p className="text-green-600 dark:text-green-400 text-center">
+                ✅ Thank you! Your testimonial has been submitted for approval.
+              </p>
+            </div>
+          )}
+
+          {submitError && (
             <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-red-600 dark:text-red-400 text-center">{error}</p>
+              <p className="text-red-600 dark:text-red-400 text-center">{submitError}</p>
             </div>
           )}
 
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-            {/* ---- Add Testimonial Form - 60% ---- */}
+            {/* ---- Public Testimonial Form - 60% ---- */}
             <div className="lg:w-[60%]">
               <div className="bg-[#F8F9FC] dark:bg-[#121629] p-6 md:p-8 rounded-2xl border border-[#F8F9FC] dark:border-[#121629] shadow-lg">
                 <h2 className="text-2xl font-bold text-[#111827] dark:text-[#E2E8F0] mb-6">
@@ -152,14 +94,14 @@ const Testimonials = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-[#111827] dark:text-[#E2E8F0]">
-                        Your Name *
-                      </label>
-                      <input
+                      <Label className="block mb-2 text-sm font-medium text-[#111827] dark:text-[#E2E8F0]">
+                        Your Name
+                      </Label>
+                      <Input
                         type="text"
                         placeholder="John Doe"
-                        value={authorName}
-                        onChange={(e) => setAuthorName(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         className="w-full p-3 md:p-4 rounded-xl border border-gray-300 dark:border-[#2A2F45] bg-white dark:bg-[#1E2235] text-[#111827] dark:text-[#E2E8F0] outline-none focus:ring-2 focus:ring-[#2563EB] dark:focus:ring-[#4A7CFE] focus:border-transparent transition-all duration-300"
                         required
                         disabled={submitting}
@@ -169,14 +111,14 @@ const Testimonials = () => {
                     </div>
 
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-[#111827] dark:text-[#E2E8F0]">
-                        Your Email *
-                      </label>
-                      <input
+                      <Label className="block mb-2 text-sm font-medium text-[#111827] dark:text-[#E2E8F0]">
+                        Your Email
+                      </Label>
+                      <Input
                         type="email"
                         placeholder="name@example.com"
-                        value={authorEmail}
-                        onChange={(e) => setAuthorEmail(e.target.value)}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="w-full p-3 md:p-4 rounded-xl border border-gray-300 dark:border-[#2A2F45] bg-white dark:bg-[#1E2235] text-[#111827] dark:text-[#E2E8F0] outline-none focus:ring-2 focus:ring-[#2563EB] dark:focus:ring-[#4A7CFE] focus:border-transparent transition-all duration-300"
                         required
                         disabled={submitting}
@@ -185,10 +127,10 @@ const Testimonials = () => {
                   </div>
 
                   <div>
-                    <label className="block mb-2 text-sm font-medium text-[#111827] dark:text-[#E2E8F0]">
-                      Your Message *
-                    </label>
-                    <textarea
+                    <Label className="block mb-2 text-sm font-medium text-[#111827] dark:text-[#E2E8F0]">
+                      Your Message
+                    </Label>
+                    <Textarea
                       placeholder="Share your experience working with me..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
@@ -196,18 +138,18 @@ const Testimonials = () => {
                       required
                       disabled={submitting}
                       minLength={10}
-                      maxLength={500}
+                      maxLength={1000}
                     />
                     <div className="text-right text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {message.length}/500
+                      {message.length}/1000
                     </div>
                   </div>
 
                   <button
                     type="submit"
-                    disabled={submitting || !context.userToken}
+                    disabled={submitting}
                     className={`w-full py-3 md:py-4 rounded-xl font-semibold text-lg ${
-                      submitting || !context.userToken
+                      submitting
                         ? 'bg-gray-400 dark:bg-gray-700 cursor-not-allowed'
                         : 'bg-[#2563EB] dark:bg-[#4A7CFE] hover:bg-[#1D4ED8] dark:hover:bg-[#3B82F6]'
                     } text-white transition-all duration-300 hover:scale-[1.02] disabled:hover:scale-100`}
@@ -217,23 +159,15 @@ const Testimonials = () => {
                         <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
                         Submitting...
                       </div>
-                    ) : !context.userToken ? (
-                      "Login to Submit"
                     ) : (
-                      "Submit Testimonial"
+                      "Submit"
                     )}
                   </button>
                   
-                  {!context.userToken && (
-                    <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">
-                      Please log in to submit a testimonial
-                    </p>
-                  )}
                 </form>
               </div>
             </div>
 
-            {/* ---- Show Public Testimonials - 40% ---- */}
             <div className="lg:w-[40%]">
               <div className="space-y-6">
                 {displayedTestimonials.length > 0 ? (
@@ -262,14 +196,6 @@ const Testimonials = () => {
                         </p>
                         <div className="absolute -bottom-2 -right-2 text-2xl md:text-3xl text-[#2563EB] dark:text-[#4A7CFE]">"</div>
                       </div>
-                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                          </svg>
-                          {new Date(t.createdAt || Date.now()).toLocaleDateString()}
-                        </div>
-                      </div>
                     </div>
                   ))
                 ) : (
@@ -291,16 +217,15 @@ const Testimonials = () => {
                 )}
               </div>
               
-              {displayedTestimonials.length > 0 && visibleTestimonials.length > 2 && (
+              {displayedTestimonials.length > 0 && testimonials.length > 2 && (
                 <div className="mt-6 text-center">
                   <button
                     onClick={() => {
-                      // يمكنك إضافة منطق لتحميل المزيد هنا
-                      alert(`There are ${visibleTestimonials.length - 2} more testimonials available.`);
+                      alert(`There are ${testimonials.length - 2} more testimonials available.`);
                     }}
                     className="text-[#2563EB] dark:text-[#4A7CFE] hover:text-[#1D4ED8] dark:hover:text-[#3B82F6] font-medium transition-colors duration-300"
                   >
-                    View all testimonials ({visibleTestimonials.length})
+                    View all testimonials ({testimonials.length})
                   </button>
                 </div>
               )}

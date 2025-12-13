@@ -25,7 +25,6 @@ const Skills = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
 
-  // Load skills and categories once
   useEffect(() => {
     const loadData = async () => {
       setInitialLoading(true);
@@ -43,7 +42,7 @@ const Skills = () => {
       }
     };
     loadData();
-  }, []); // dependency فاضية => تحميل مرة واحدة
+  }, []);
 
   const handleAdd = () => {
     setEditingSkill(null);
@@ -162,7 +161,6 @@ const Skills = () => {
         </div>
       )}
 
-      {/* Dialog Form */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>

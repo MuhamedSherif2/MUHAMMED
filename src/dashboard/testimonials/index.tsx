@@ -8,7 +8,6 @@ const AdminTestimonials = () => {
   const { testimonials, portfolioActions } = context;
   const [loading, setLoading] = useState(true);
 
-  // هات الـ token بأي طريقة شغال بيها انت
   const token = localStorage.getItem("token") as string;
 
   useEffect(() => {
@@ -22,7 +21,6 @@ const AdminTestimonials = () => {
     load();
   }, []);
 
-  // toggle show/hide
   const toggleShow = async (id: string, current: boolean) => {
     const formData = new FormData();
     formData.append("isShow", String(!current));
@@ -34,7 +32,6 @@ const AdminTestimonials = () => {
     }
   };
 
-  // delete
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this testimonial?")) return;
 
@@ -60,11 +57,13 @@ const AdminTestimonials = () => {
           Manage Testimonials
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="space-y-4 md:space-y-6">
           {testimonials?.map((t) => (
-            <div 
-              key={t._id} 
-              className="bg-[#F8F9FC] dark:bg-[#121629] border border-[#F8F9FC] dark:border-[#121629] rounded-xl p-4 md:p-5 flex flex-col gap-3 hover:border-[#2563EB] dark:hover:border-[#4A7CFE] transition-all duration-300"
+            <div
+              key={t._id}
+              className="bg-[#F8F9FC] dark:bg-[#121629] border border-[#F8F9FC] dark:border-[#121629] 
+                    rounded-xl p-4 md:p-5 flex flex-col gap-3 
+                    hover:border-[#2563EB] dark:hover:border-[#4A7CFE] transition-all duration-300"
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
@@ -94,7 +93,7 @@ const AdminTestimonials = () => {
               <p className="text-sm text-[#4B5563] dark:text-[#94A3B8]">
                 {t.authorEmail}
               </p>
-              
+
               <div className="grow">
                 <p className="text-[#4B5563] dark:text-[#94A3B8] italic border-l-2 border-[#2563EB] dark:border-[#4A7CFE] pl-3 py-1">
                   "{t.message}"
@@ -105,7 +104,7 @@ const AdminTestimonials = () => {
                 <span className={`text-xs px-2 py-1 rounded ${t.isShow ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300'}`}>
                   {t.isShow ? "Public" : "Hidden"}
                 </span>
-                
+
                 <button
                   onClick={() => handleDelete(t._id)}
                   className="bg-[#EF4444] hover:bg-[#DC2626] text-white py-1.5 px-4 rounded-lg text-sm font-medium transition-colors"
