@@ -30,7 +30,6 @@ const Skills = () => {
 
   const skills: ISkills[] = context.skills || [];
 
-  // تجميع المهارات حسب الكاتيجوري
   const skillsByCategory: Record<string, ISkills[]> = {};
   skills.forEach(skill => {
     const categoryName = skill.category?.title || "Uncategorized";
@@ -75,6 +74,9 @@ const Skills = () => {
                   <p className="text-[#111827] dark:text-[#E2E8F0] text-sm md:text-base font-medium">
                     {skill.title}
                   </p>
+                  {/* <p className="text-[#111827] dark:text-[#E2E8F0] text-sm md:text-base font-medium">
+                    {skill.category.title}
+                  </p> */}
                   <div className="mt-2 h-1 w-8 mx-auto bg-[#2563EB] dark:bg-[#4A7CFE] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
               ))}

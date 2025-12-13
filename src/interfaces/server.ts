@@ -58,9 +58,9 @@ export interface IProject {
     _id: string;
     title: string;
     description: string;
-    categoryDetails?: ICategory; 
+    categoryDetails?: ICategory;
     image: string;
-    skillDetails?: ISkills[]; 
+    skillDetails?: ISkills[];
     hot: boolean;
     githubFront: string;
     githubBack: string;
@@ -82,7 +82,7 @@ export interface ISkills {
     _id: string;
     title: string;
     image: string;
-    category:ICategory ;
+    category: ICategory;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -90,7 +90,7 @@ export interface ISkills {
 export interface ITestimonials {
     _id: string;
     authorName: string;
-    authorEmail:string;
+    authorEmail: string;
     message: string;
     isShow: boolean;
     createdAt?: string;
