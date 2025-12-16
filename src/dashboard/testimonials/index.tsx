@@ -3,12 +3,15 @@ import { Context } from "@/context";
 
 const AdminTestimonials = () => {
   const context = useContext(Context);
-  if (!context) return <div className="text-[#4B5563] dark:text-[#94A3B8]">Context not found</div>;
+  if (!context)
+    return (
+      <div className="text-[#4B5563] dark:text-[#94A3B8]">
+        Context not found
+      </div>
+    );
 
   const { testimonials, portfolioActions } = context;
   const [loading, setLoading] = useState(true);
-
-  const token = localStorage.getItem("token") as string;
 
   useEffect(() => {
     const load = async () => {
@@ -26,7 +29,7 @@ const AdminTestimonials = () => {
     formData.append("isShow", String(!current));
 
     try {
-      await portfolioActions.updateExistingTestimonial(id, token, formData);
+      await portfolioActions.updateExistingTestimonial(id, formData);
     } catch (err) {
       console.error("Toggle Error:", err);
     }
@@ -36,7 +39,7 @@ const AdminTestimonials = () => {
     if (!confirm("Are you sure you want to delete this testimonial?")) return;
 
     try {
-      await portfolioActions.deleteExistingTestimonial(id, token);
+      await portfolioActions.deleteExistingTestimonial(id);
     } catch (err) {
       console.error("Delete Error:", err);
     }
@@ -61,10 +64,11 @@ const AdminTestimonials = () => {
           {testimonials?.map((t) => (
             <div
               key={t._id}
-              className="bg-[#F8F9FC] dark:bg-[#121629] border border-[#F8F9FC] dark:border-[#121629] 
-                    rounded-xl p-4 md:p-5 flex flex-col gap-3 
-                    hover:border-[#2563EB] dark:hover:border-[#4A7CFE] transition-all duration-300"
+              className="bg-[#F8F9FC] dark:bg-[#121629] border border-[#F8F9FC] dark:border-[#121629]
+              rounded-xl p-4 md:p-5 flex flex-col gap-3
+              hover:border-[#2563EB] dark:hover:border-[#4A7CFE] transition-all duration-300"
             >
+              {/* Header */}
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-[#2563EB] dark:bg-[#4A7CFE] rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -75,35 +79,42 @@ const AdminTestimonials = () => {
                   </h3>
                 </div>
 
-                {/* Toggle Switch */}
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={t.isShow}
-                    onChange={() => toggleShow(t._id, t.isShow)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2563EB] dark:peer-checked:bg-[#4A7CFE]"></div>
-                  <span className="ml-2 text-sm text-[#4B5563] dark:text-[#94A3B8]">
-                    {t.isShow ? "Shown" : "Hidden"}
-                  </span>
-                </label>
+                <span
+                  className={`text-xs px-2 py-1 rounded ${
+                    t.isShow
+                      ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300"
+                      : "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300"
+                  }`}
+                >
+                  {t.isShow ? "Public" : "Hidden"}
+                </span>
               </div>
 
+              {/* Email */}
               <p className="text-sm text-[#4B5563] dark:text-[#94A3B8]">
                 {t.authorEmail}
               </p>
 
+              {/* Message */}
               <div className="grow">
                 <p className="text-[#4B5563] dark:text-[#94A3B8] italic border-l-2 border-[#2563EB] dark:border-[#4A7CFE] pl-3 py-1">
                   "{t.message}"
                 </p>
               </div>
 
-              <div className="flex justify-between items-center pt-2 mt-2 border-t border-[#F8F9FC] dark:border-[#121629]">
-                <span className={`text-xs px-2 py-1 rounded ${t.isShow ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300'}`}>
-                  {t.isShow ? "Public" : "Hidden"}
-                </span>
+              {/* Actions */}
+              <div className="flex justify-end items-center gap-3 pt-2 mt-2 border-t border-[#F8F9FC] dark:border-[#121629]">
+                <button
+                  onClick={() => toggleShow(t._id, t.isShow)}
+                  className={`py-1.5 px-4 rounded-lg text-sm font-medium transition-colors
+                    ${
+                      t.isShow
+                        ? "bg-yellow-500 hover:bg-yellow-600 text-white"
+                        : "bg-green-600 hover:bg-green-700 text-white"
+                    }`}
+                >
+                  {t.isShow ? "Hide" : "Show"}
+                </button>
 
                 <button
                   onClick={() => handleDelete(t._id)}

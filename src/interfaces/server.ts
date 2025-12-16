@@ -57,16 +57,23 @@ export interface ILoginResponse {
 export interface IProject {
     _id: string;
     title: string;
-    description: string;
-    categoryDetails?: ICategory;
+    overview: string;
+    keyFeatures: string;
+    highlights: string;
+    projectType: string;
     image: string;
-    skillDetails?: ISkills[];
+    category:ICategory;
+    skills: IProjectSkill[];
     hot: boolean;
     githubFront: string;
     githubBack: string;
     demo: string;
-    createdAt?: string;
-    updatedAt?: string;
+}
+
+export interface IProjectSkill {
+    _id: string;
+    title: string;
+    image: string;
 }
 
 export interface IServices {
@@ -80,8 +87,8 @@ export interface IServices {
 
 export interface ISkills {
     _id: string;
-    title: string;
-    image: string;
+    skill_name: string;
+    skill_icon?: string;
     category: ICategory;
     createdAt?: string;
     updatedAt?: string;

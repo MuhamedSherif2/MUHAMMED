@@ -24,17 +24,17 @@ import type {
 
 
 export const createPortfolioActions = (
-    setAboutMe: React.Dispatch<React.SetStateAction<IAboutMe | null>>, 
-    setCertifications: React.Dispatch<React.SetStateAction<ICertifications[]>>, 
-    setCover: React.Dispatch<React.SetStateAction<ICover | null>>, 
-    setProjects: React.Dispatch<React.SetStateAction<IProject[]>>, 
-    setUniqueProjects: React.Dispatch<React.SetStateAction<IProject[]>>, 
-    setProjectCategories: React.Dispatch<React.SetStateAction<ICategory[]>>, 
-    setServices: React.Dispatch<React.SetStateAction<IServices[]>>, 
-    setSkills: React.Dispatch<React.SetStateAction<ISkills[]>>, 
-    setSkillsCategory: React.Dispatch<React.SetStateAction<ICategory[]>>, 
-    setTestimonials: React.Dispatch<React.SetStateAction<ITestimonials[]>>, 
-    setWorkExperince: React.Dispatch<React.SetStateAction<IWorkExperince[]>>, 
+    setAboutMe: React.Dispatch<React.SetStateAction<IAboutMe | null>>,
+    setCertifications: React.Dispatch<React.SetStateAction<ICertifications[]>>,
+    setCover: React.Dispatch<React.SetStateAction<ICover | null>>,
+    setProjects: React.Dispatch<React.SetStateAction<IProject[]>>,
+    setUniqueProjects: React.Dispatch<React.SetStateAction<IProject[]>>,
+    setProjectCategories: React.Dispatch<React.SetStateAction<ICategory[]>>,
+    setServices: React.Dispatch<React.SetStateAction<IServices[]>>,
+    setSkills: React.Dispatch<React.SetStateAction<ISkills[]>>,
+    setSkillsCategory: React.Dispatch<React.SetStateAction<ICategory[]>>,
+    setTestimonials: React.Dispatch<React.SetStateAction<ITestimonials[]>>,
+    setWorkExperince: React.Dispatch<React.SetStateAction<IWorkExperince[]>>,
     setShowTestimonials: React.Dispatch<React.SetStateAction<ITestimonials[]>>
 ) => {
     // ABOUT ME
@@ -229,8 +229,9 @@ export const createPortfolioActions = (
 
     const loadShowTestimonials = async () => {
         const res = await getShowTestimonials();
-        setShowTestimonials(res.data); // استخدم setShowTestimonials هنا
+        setShowTestimonials(res.data || []);
     };
+
 
     const addNewTestimonial = async (formData: FormData) => {
         const res = await addTestimonial(formData);
@@ -240,13 +241,10 @@ export const createPortfolioActions = (
         }
     };
 
-    const updateExistingTestimonial = async (id: string, token: string, formData: FormData) => {
-        const res = await updateTestimonial(id, token, formData);
-        
-        // تحديث testimonials
+    const updateExistingTestimonial = async (id: string, formData: FormData) => {
+        const res = await updateTestimonial(id, formData);
         setTestimonials(prev => prev.map(t => t._id === id ? res.data : t));
-        
-        // تحديث showTestimonials بناءً على حالة isShow
+
         setShowTestimonials(prev => {
             if (res.data.isShow) {
                 const exists = prev.find(t => t._id === id);
@@ -261,8 +259,8 @@ export const createPortfolioActions = (
         });
     };
 
-    const deleteExistingTestimonial = async (id: string, token: string) => {
-        await deleteTestimonial(id, token);
+    const deleteExistingTestimonial = async (id: string) => {
+        await deleteTestimonial(id);
         setTestimonials(prev => prev.filter(t => t._id !== id));
         setShowTestimonials(prev => prev.filter(t => t._id !== id));
     };
