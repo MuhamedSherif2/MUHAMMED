@@ -87,8 +87,8 @@ export interface IServices {
 
 export interface ISkills {
     _id: string;
-    skill_name: string;
-    skill_icon?: string;
+    title: string;
+    image?: string;
     category: ICategory;
     createdAt?: string;
     updatedAt?: string;
