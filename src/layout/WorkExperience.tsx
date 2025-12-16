@@ -4,7 +4,6 @@ import { Briefcase, Building, FileText, ExternalLink } from "lucide-react";
 
 const WorkExperience = () => {
   const context = useContext(Context);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -12,8 +11,8 @@ const WorkExperience = () => {
 
     const loadData = async () => {
       try {
-        // لو الداتا لسه محملتش
-        if (!context.workExperince) {
+        // لو الداتا مش موجودة أو فاضية
+        if (!context.workExperince || context.workExperince.length === 0) {
           await context.portfolioActions.loadWorkExperince?.();
         }
       } catch (error) {
@@ -24,28 +23,33 @@ const WorkExperience = () => {
     };
 
     loadData();
-  }, []);
+  }, [context]);
 
-  // Spinner أثناء التحميل
-  if (!context || loading) {
+  // Loading State
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-60">
-        <div className="animate-spin h-12 w-12 border-2 border-blue-600 dark:border-blue-400 rounded-full border-t-transparent"></div>
+        <div className="animate-spin h-12 w-12 border-2 border-blue-600 dark:border-blue-400 rounded-full border-t-transparent" />
       </div>
     );
   }
 
+  if (!context) return null;
+
   const { workExperince } = context;
 
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString("en-US", {
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "Present";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
       month: "short",
       year: "numeric",
     });
+  };
 
   return (
     <section className="w-full bg-white dark:bg-gray-900 py-12 md:py-16">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
             Work Experience
@@ -55,8 +59,7 @@ const WorkExperience = () => {
           </p>
         </div>
 
-        {/* ====== في حالة وجود بيانات ====== */}
-        {Array.isArray(workExperince) && workExperince.length > 0 ? (
+        {workExperince && workExperince.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {workExperince.map((exp) => (
               <div
@@ -79,7 +82,8 @@ const WorkExperience = () => {
                       {exp.type}
                     </span>
                     <span className="text-sm text-gray-500">
-                      {formatDate(exp.startDate)} – {formatDate(exp.endDate)}
+                      {formatDate(exp.startDate)} -{" "}
+                      {exp.endDate ? formatDate(exp.endDate) : "Present"}
                     </span>
                   </div>
 
@@ -90,7 +94,6 @@ const WorkExperience = () => {
                         {exp.title}
                       </h3>
                     </div>
-
                     <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                       <Building className="w-4 h-4" />
                       <span>{exp.organization}</span>

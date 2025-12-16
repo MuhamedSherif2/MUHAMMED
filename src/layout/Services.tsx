@@ -31,8 +31,8 @@ const Services = () => {
 
   return (
     <section className='w-full bg-white dark:bg-[#0B0E1D] py-12'>
-      <div className='w-full'>
-        <div className='w-full max-w-6xl mx-auto px-6'>
+      <div className='container mx-auto'>
+        <div className='px-6'>
           <h2 className='text-center font-bold text-3xl md:text-4xl text-[#111827] dark:text-[#E2E8F0] mb-3'>
             Services
           </h2>
@@ -105,8 +105,6 @@ const Services = () => {
 };
 
 export default Services;
-
-// import { useState, useEffect, useContext } from "react";
 // import { Context } from "@/context";
 // import { 
 //   Globe, 
