@@ -13,21 +13,26 @@ function ProjectDetails() {
     );
 
   const { id } = useParams();
-  const project = context.uniqueProjects.find(p => p._id === id) || null;
+
+  // ابحث في projects أولاً (هذا هو المتغير المستخدم في الكومبوننت السابق)
+  const project = context.projects.find(p => p._id === id)
+    || (context.uniqueProjects || []).find(p => p._id === id)
+    || null;
 
   if (!project) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-white dark:bg-[#0B0E1D]">
-        <div className="animate-spin h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#4A7CFE] rounded-full"></div>
+      <div className="flex flex-col justify-center items-center min-h-screen bg-white dark:bg-[#0B0E1D] p-8">
+        <div className="animate-spin h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#4A7CFE] rounded-full mb-4"></div>
+        <p className="text-[#4B5563] dark:text-[#94A3B8]">
+          {id ? `Project with ID "${id}" not found` : "No project ID provided"}
+        </p>
       </div>
     );
   }
 
-  // دالة لتقسيم النص إلى نقاط
   const splitTextIntoPoints = (text: string) => {
     if (!text) return [];
 
-    // جرب كل أنواع الفواصل
     const separators = ['\n', '. ', '- ', '• ', '* ', '✓ '];
 
     for (const separator of separators) {

@@ -64,7 +64,7 @@ const Projects = () => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
-  
+
   return (
     <section className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -154,9 +154,9 @@ const Projects = () => {
                   {/* Skills */}
                   <div className="flex flex-wrap gap-2">
                     {project.skills?.length ? (
-                      project.skills.map(skill => (
+                      project.skills.map((skill, index) => (
                         <span
-                          key={skill._id}
+                          key={skill._id || `skill-${index}`}
                           className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded"
                         >
                           {skill.title}
