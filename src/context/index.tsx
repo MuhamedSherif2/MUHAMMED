@@ -15,6 +15,14 @@ import type {
   IApiResponse,
 } from "../interfaces/server";
 
+import {AboutMeStatic} from './data/AboutMe'
+import {CertificationStatic} from './data/Certification'
+import {CoverStatic} from './data/Cover'
+import {ProjectStatic} from './data/Project'
+import {SkillsStatic} from './data/Skills'
+import {ServicesStatic} from './data/Services'
+import {WorkExperinceStatic} from './data/WorkExperience'
+
 interface IContext {
   theme: string;
   toggleTheme: () => void;
@@ -61,17 +69,17 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [selectProject, setSelectProject] = useState<string | null>(null);
 
-  const [aboutMe, setAboutMe] = useState<IAboutMe | null>(null);
-  const [certifications, setCertifications] = useState<ICertifications[]>([]);
-  const [cover, setCover] = useState<ICover | null>(null);
-  const [projects, setProjects] = useState<IProject[]>([]);
+  const [aboutMe, setAboutMe] = useState<IAboutMe | null>(AboutMeStatic);
+  const [certifications, setCertifications] = useState<ICertifications[]>(CertificationStatic);
+  const [cover, setCover] = useState<ICover | null>(CoverStatic);
+  const [projects, setProjects] = useState<IProject[]>(ProjectStatic);
   const [uniqueProjects, setUniqueProjects] = useState<IProject[]>([]);
   const [projectCategories, setProjectCategories] = useState<ICategory[]>([]);
-  const [services, setServices] = useState<IServices[]>([]);
-  const [skills, setSkills] = useState<ISkills[]>([]);
+  const [services, setServices] = useState<IServices[]>(ServicesStatic);
+  const [skills, setSkills] = useState<ISkills[]>(SkillsStatic);
   const [skillsCategory, setSkillsCategory] = useState<ICategory[]>([]);
   const [testimonials, setTestimonials] = useState<ITestimonials[]>([]);
-  const [workExperince, setWorkExperince] = useState<IWorkExperince[]>([]);
+  const [workExperince, setWorkExperince] = useState<IWorkExperince[]>(WorkExperinceStatic);
   const [showTestimonials, setShowTestimonials] = useState<ITestimonials[]>([]);
 
   const [userToken, setUserToken] = useState<string | null>(localStorage.getItem("token"));

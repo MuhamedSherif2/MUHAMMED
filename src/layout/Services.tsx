@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Context } from "@/context";
+import Loading from "@/components/Loading";
 
 const Services = () => {
   const context = useContext(Context);
@@ -8,14 +9,12 @@ const Services = () => {
   const [loading, setLoading] = useState(true);
   const { services, portfolioActions } = context;
 
-  // دالة تقسيم النص
   const splitTextIntoPoints = (text: string): string[] => {
     if (!text || typeof text !== 'string') return [];
-    
+
     const cleanText = text.trim();
     if (!cleanText) return [];
 
-    // محاولة تقسيم حسب الأسطر الجديدة أولاً
     if (cleanText.includes('\n')) {
       return cleanText
         .split('\n')
@@ -23,7 +22,6 @@ const Services = () => {
         .filter(point => point.length > 0);
     }
 
-    // ثم محاولة تقسيم حسب النقاط مع شرطة
     if (cleanText.includes('• ')) {
       return cleanText
         .split('• ')
@@ -32,7 +30,6 @@ const Services = () => {
         .filter((point, index) => index > 0 || !point.startsWith('•'));
     }
 
-    // ثم محاولة تقسيم حسب الشرطة
     if (cleanText.includes('- ')) {
       return cleanText
         .split('- ')
@@ -56,14 +53,8 @@ const Services = () => {
     loadData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-40">
-        <div className="animate-spin h-10 w-10 border-b-2 border-[#2563EB] dark:border-[#4A7CFE] rounded-full"></div>
-      </div>
-    );
-  }
-
+  if (loading || !context) return <Loading />;
+  
   return (
     <section className='w-full bg-white dark:bg-[#0B0E1D] py-12'>
       <div className='container mx-auto'>
@@ -80,7 +71,7 @@ const Services = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {services.map((item) => {
                 const descriptionPoints = splitTextIntoPoints(item.description);
-                
+
                 return (
                   <div
                     key={item._id}

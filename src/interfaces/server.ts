@@ -65,8 +65,8 @@ export interface IProject {
     category:ICategory;
     skills: IProjectSkill[];
     hot: boolean;
-    githubFront: string;
-    githubBack: string;
+    githubFront?: string;
+    githubBack?: string;
     demo: string;
 }
 

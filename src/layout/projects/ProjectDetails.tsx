@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { FaCode, FaExternalLinkAlt } from "react-icons/fa";
 import { Context } from "@/context";
+import Loading from "@/components/Loading";
 
 function ProjectDetails() {
   const context = useContext(Context);
@@ -14,21 +15,11 @@ function ProjectDetails() {
 
   const { id } = useParams();
 
-  // ابحث في projects أولاً (هذا هو المتغير المستخدم في الكومبوننت السابق)
   const project = context.projects.find(p => p._id === id)
     || (context.uniqueProjects || []).find(p => p._id === id)
     || null;
 
-  if (!project) {
-    return (
-      <div className="flex flex-col justify-center items-center min-h-screen bg-white dark:bg-[#0B0E1D] p-8">
-        <div className="animate-spin h-12 w-12 border-b-2 border-[#2563EB] dark:border-[#4A7CFE] rounded-full mb-4"></div>
-        <p className="text-[#4B5563] dark:text-[#94A3B8]">
-          {id ? `Project with ID "${id}" not found` : "No project ID provided"}
-        </p>
-      </div>
-    );
-  }
+  if (!project) return <Loading />;
 
   const splitTextIntoPoints = (text: string) => {
     if (!text) return [];
@@ -163,7 +154,7 @@ function ProjectDetails() {
             {project.demo && (
               <div className="flex-1">
                 <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                  <button className="w-full flex items-center justify-center gap-3 bg-[#2563EB] dark:bg-[#4A7CFE] hover:bg-[#1D4ED8] dark:hover:bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-[1.02]">
+                  <button className="w-full flex items-center justify-center gap-3 bg-[#2563EB] dark:bg-[#4A7CFE] hover:bg-[#1D4ED8] dark:hover:bg-[#3B82F6] text-white px-6 py-3 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:scale-[1.02]">
                     <FaExternalLinkAlt className="w-4 h-4" />
                     Visit
                   </button>
@@ -175,9 +166,9 @@ function ProjectDetails() {
             {project.githubFront && (
               <div className="flex-1">
                 <a href={project.githubFront} target="_blank" rel="noopener noreferrer">
-                  <button className="w-full flex items-center justify-center gap-3 bg-[#059669] dark:bg-[#10B981] hover:bg-[#047857] dark:hover:bg-[#0D9C6F] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-[1.02]">
+                  <button className="w-full flex items-center cursor-pointer justify-center gap-3 bg-[#059669] dark:bg-[#10B981] hover:bg-[#047857] dark:hover:bg-[#0D9C6F] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-[1.02]">
                     <FaCode className="w-4 h-4" />
-                    View
+                    View Code
                   </button>
                 </a>
               </div>

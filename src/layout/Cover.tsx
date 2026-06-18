@@ -4,6 +4,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { RiVercelFill } from 'react-icons/ri';
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '@/context';
+import Loading from '@/components/Loading';
 
 function Cover() {
     const context = useContext(Context);
@@ -12,24 +13,14 @@ function Cover() {
     useEffect(() => {
         const loadData = async () => {
             if (context && !context.cover) {
-                try {
-                    await context.portfolioActions.loadCover();
-                } catch (err) {
-                    console.error("Failed to load cover:", err);
-                }
+                await context.portfolioActions.loadCover();
             }
             setLoading(false);
         };
         loadData();
     }, [context]);
 
-    if (!context || loading) {
-        return (
-            <div className="flex justify-center items-center h-40">
-                <div className="animate-spin h-10 w-10 border-b-2 border-blue-600 rounded-full"></div>
-            </div>
-        );
-    }
+    if (loading || !context) return <Loading />;
 
     const { cover } = context;
 

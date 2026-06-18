@@ -1,12 +1,13 @@
 import Cover from './Cover'
 import AboutMe from './AboutMe'
 import Skills from './Skills'
-import Contact from './Contact'
 import Certification from './Certification'
-import Testimonials from './Testimonials'
-import UniqueProject from './projects/UniqueProject'
+// import Contact from './Contact'
+// import Testimonials from './Testimonials'
+// import UniqueProject from './projects/UniqueProject'
 import Services from './Services'
 import WorkExperience from './WorkExperience'
+import AllProjects from './projects/AllProjects'
 
 function Home() {
   return (
@@ -14,12 +15,13 @@ function Home() {
       <Cover />
       <AboutMe />
       <Skills />
-      <UniqueProject />
+      {/* <UniqueProject /> */}
+      <AllProjects />
       <WorkExperience />
       <Services />
       <Certification />
-      <Testimonials />
-      <Contact />
+      {/* <Testimonials />
+      <Contact /> */}
     </>
   )
 }

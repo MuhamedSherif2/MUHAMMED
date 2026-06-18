@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Context } from '../../context';
 import { Link } from 'react-router-dom';
 import { ArrowRight, FolderKanban, Search } from 'lucide-react';
+import Loading from '@/components/Loading';
 
 const AllProjects = () => {
   const context = useContext(Context);
@@ -10,7 +11,6 @@ const AllProjects = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Load projects أول ما الصفحة تفتح
   useEffect(() => {
     const loadData = async () => {
       if (projects.length === 0) {
@@ -32,21 +32,11 @@ const AllProjects = () => {
     project.skills?.some(skill => skill.title.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  if (!context || loading) {
-    return (
-      <div className="min-h-screen flex flex-col justify-center items-center bg-linear-to-br from-gray-50 to-white dark:from-[#0B0E1D] dark:to-[#0F172A]">
-        <div className="relative">
-          <div className="animate-spin h-20 w-20 border-4 border-gray-200 dark:border-gray-800 rounded-full"></div>
-          <div className="absolute top-0 left-0 animate-spin h-20 w-20 border-4 border-[#2563EB] dark:border-[#4A7CFE] border-t-transparent rounded-full"></div>
-        </div>
-        <p className="mt-6 text-gray-600 dark:text-gray-400 font-medium animate-pulse">Loading projects...</p>
-      </div>
-    );
-  }
+  if (loading || !context) return <Loading />;
 
   return (
     <section className="min-h-screen w-full bg-linear-to-br from-gray-50 to-white dark:from-[#0B0E1D] dark:to-[#0F172A] p-4 md:p-8 lg:p-12">
-      <div className="container mx-auto max-w-7xl">
+      <div className="container mx-auto">
         {/* Header Section */}
         <div className="mb-10 md:mb-16">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">

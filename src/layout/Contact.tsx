@@ -30,7 +30,6 @@ const Contact = () => {
       return
     }
 
-    // تحقق من البيانات المطلوبة
     if (!formData.name.trim()) {
       setError("Name is required")
       return

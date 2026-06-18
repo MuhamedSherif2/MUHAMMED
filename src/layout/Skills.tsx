@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Context } from "@/context";
 import type { ISkills } from "@/interfaces/server";
+import Loading from "@/components/Loading";
 
 const Skills = () => {
   const context = useContext(Context);
@@ -20,13 +21,7 @@ const Skills = () => {
     loadData();
   }, [context]);
 
-  if (!context || loading) {
-    return (
-      <div className="flex justify-center items-center h-40">
-        <div className="animate-spin h-10 w-10 border-b-2 border-[#2563EB] dark:border-[#4A7CFE] rounded-full"></div>
-      </div>
-    );
-  }
+  if (loading || !context) return <Loading />;
 
   const skills: ISkills[] = context.skills || [];
 

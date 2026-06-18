@@ -39,8 +39,15 @@ export const createPortfolioActions = (
 ) => {
     // ABOUT ME
     const loadAboutMe = async () => {
-        const res = await getAboutMe();
-        setAboutMe(res.data);
+        try {
+            const res = await getAboutMe();
+
+            if (res?.data) {
+                setAboutMe(res.data);
+            }
+        } catch (error) {
+            console.error("About API Error:", error);
+        }
     };
 
     const addAbout = async (data: Partial<IAboutMe>, token: string) => {
@@ -60,8 +67,15 @@ export const createPortfolioActions = (
 
     // CERTIFICATIONS
     const loadCertifications = async () => {
-        const res = await getCertifications();
-        setCertifications(res.data);
+        try {
+            const res = await getCertifications();
+
+            if (res?.data?.length > 0) {
+                setCertifications(res.data);
+            }
+        } catch (error) {
+            console.error("Certifications API Error:", error);
+        }
     };
 
     const addNewCertification = async (formData: FormData, token: string) => {
@@ -81,10 +95,19 @@ export const createPortfolioActions = (
 
     // COVER
     const loadCover = async () => {
-        const res = await getCover();
-        const cover = res.data.length > 0 ? res.data[0] : null;
-        setCover(cover);
+        try {
+            const res = await getCover();
+
+            const cover = res.data.length > 0 ? res.data[0] : null;
+
+            if (cover) {
+                setCover(cover);
+            }
+        } catch (error) {
+            console.error("Cover API Error:", error);
+        }
     };
+
     const addNewCover = async (token: string, formData: FormData) => {
         const res = await addCover(token, formData);
         setCover(res.data);
@@ -102,13 +125,27 @@ export const createPortfolioActions = (
 
     // PROJECTS
     const loadProjects = async () => {
-        const res = await getProjects();
-        setProjects(res.data);
+        try {
+            const res = await getProjects();
+
+            if (res?.data?.length > 0) {
+                setProjects(res.data);
+            }
+        } catch (error) {
+            console.error("Projects API Error:", error);
+        }
     };
 
     const loadUniqueProjects = async () => {
-        const res = await getHotProjects();
-        setUniqueProjects(res.data);
+        try {
+            const res = await getHotProjects();
+
+            if (res?.data?.length > 0) {
+                setUniqueProjects(res.data);
+            }
+        } catch (error) {
+            console.error("Hot Projects API Error:", error);
+        }
     };
 
     const addNewProject = async (token: string, formData: FormData) => {
@@ -124,7 +161,7 @@ export const createPortfolioActions = (
             );
         } catch (error) {
             console.error("Error updating project:", error);
-            throw error; // يمكن التعامل مع الـ error في الفورم
+            throw error;
         }
     };
 
@@ -135,8 +172,15 @@ export const createPortfolioActions = (
 
     // PROJECT CATEGORY
     const loadProjectCategories = async () => {
-        const res = await getProjectsCategory();
-        setProjectCategories(res.data);
+        try {
+            const res = await getProjectsCategory();
+
+            if (res?.data?.length > 0) {
+                setProjectCategories(res.data);
+            }
+        } catch (error) {
+            console.error("Project Categories API Error:", error);
+        }
     };
 
     const addNewProjectCategory = async (token: string, data: { title: string }) => {
@@ -151,8 +195,15 @@ export const createPortfolioActions = (
 
     // SERVICES
     const loadServices = async () => {
-        const res = await getServices();
-        setServices(res.data);
+        try {
+            const res = await getServices();
+
+            if (res?.data?.length > 0) {
+                setServices(res.data);
+            }
+        } catch (error) {
+            console.error("Services API Error:", error);
+        }
     };
 
     const addNewService = async (token: string, formData: FormData) => {
@@ -172,8 +223,15 @@ export const createPortfolioActions = (
 
     // SKILLS
     const loadSkills = async () => {
-        const res = await getSkills();
-        setSkills(res.data);
+        try {
+            const res = await getSkills();
+
+            if (res?.data?.length > 0) {
+                setSkills(res.data);
+            }
+        } catch (error) {
+            console.error("Skills API Error:", error);
+        }
     };
 
     const addNewSkill = async (token: string, formData: FormData) => {
@@ -193,8 +251,15 @@ export const createPortfolioActions = (
 
     // SKILLS CATEGORY
     const loadSkillsCategory = async () => {
-        const res = await getSkillsCategory();
-        setSkillsCategory(res.data);
+        try {
+            const res = await getSkillsCategory();
+
+            if (res?.data?.length > 0) {
+                setSkillsCategory(res.data);
+            }
+        } catch (error) {
+            console.error("Skills Categories API Error:", error);
+        }
     };
 
     const addNewSkillsCategory = async (token: string, formData: FormData) => {
@@ -211,7 +276,7 @@ export const createPortfolioActions = (
                 loadSkillsCategory();
             }
         } catch (error) {
-            console.error("❌ Error in updateSkillsCategoryData:", error);
+            console.error("Error in updateSkillsCategoryData:", error);
             throw error;
         }
     };
@@ -223,15 +288,28 @@ export const createPortfolioActions = (
 
     // TESTIMONIALS
     const loadTestimonials = async () => {
-        const res = await getTestimonials();
-        setTestimonials(res.data);
+        try {
+            const res = await getTestimonials();
+
+            if (res?.data?.length > 0) {
+                setTestimonials(res.data);
+            }
+        } catch (error) {
+            console.error("Testimonials API Error:", error);
+        }
     };
 
     const loadShowTestimonials = async () => {
-        const res = await getShowTestimonials();
-        setShowTestimonials(res.data || []);
-    };
+        try {
+            const res = await getShowTestimonials();
 
+            if (res?.data?.length > 0) {
+                setShowTestimonials(res.data);
+            }
+        } catch (error) {
+            console.error("Show Testimonials API Error:", error);
+        }
+    };
 
     const addNewTestimonial = async (formData: FormData) => {
         const res = await addTestimonial(formData);
@@ -267,8 +345,15 @@ export const createPortfolioActions = (
 
     // WORK EXPERIENCE
     const loadWorkExperince = async () => {
-        const res = await getWorkExperince();
-        setWorkExperince(res.data);
+        try {
+            const res = await getWorkExperince();
+
+            if (res?.data?.length > 0) {
+                setWorkExperince(res.data);
+            }
+        } catch (error) {
+            console.error("Work Experience API Error:", error);
+        }
     };
 
     const addNewWorkExperince = async (token: string, formData: FormData) => {

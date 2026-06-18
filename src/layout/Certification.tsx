@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "@/context";
+import Loading from "@/components/Loading";
 
 const Certification = () => {
   const context = useContext(Context);
@@ -21,45 +22,14 @@ const Certification = () => {
     loadData();
   }, [context]);
 
-  if (!context) {
-    return (
-      <section className="w-full bg-white dark:bg-[#0B0E1D] min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin h-12 w-12 border-4 border-[#2563EB] dark:border-[#4A7CFE] border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-[#4B5563] dark:text-[#94A3B8]">Loading...</p>
-        </div>
-      </section>
-    );
-  }
-
-  if (loading) {
-    return (
-      <section className='w-full bg-white dark:bg-[#0B0E1D] py-12'>
-        <div className='w-full'>
-          <div className='w-full max-w-6xl mx-auto px-6'>
-            <h2 className='text-center font-bold text-3xl md:text-4xl text-[#111827] dark:text-[#E2E8F0] mb-3'>
-              Certifications
-            </h2>
-            
-            <p className="text-center text-[#4B5563] dark:text-[#94A3B8] text-lg mb-12 max-w-2xl mx-auto">
-              Professional achievements and qualifications
-            </p>
-
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin h-16 w-16 border-4 border-[#2563EB] dark:border-[#4A7CFE] border-t-transparent rounded-full"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  if (loading || !context) return <Loading />;
 
   const { certifications } = context;
 
   return (
     <section className='w-full bg-[#F8F9FC] dark:bg-[#0F172A] py-12'>
-      <div className='w-full'>
-        <div className='w-full max-w-6xl mx-auto px-6'>
+      <div className='container mx-auto'>
+        <div className='w-full mx-auto px-6'>
           <h2 className='text-center font-bold text-3xl md:text-4xl text-[#111827] dark:text-[#E2E8F0] mb-3'>
             Certifications
           </h2>

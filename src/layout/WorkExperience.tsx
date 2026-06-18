@@ -1,6 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import { Context } from "@/context";
 import { Briefcase, Building, FileText, ExternalLink } from "lucide-react";
+import Loading from "@/components/Loading";
 
 const WorkExperience = () => {
   const context = useContext(Context);
@@ -11,7 +12,6 @@ const WorkExperience = () => {
 
     const loadData = async () => {
       try {
-        // لو الداتا مش موجودة أو فاضية
         if (!context.workExperince || context.workExperince.length === 0) {
           await context.portfolioActions.loadWorkExperince?.();
         }
@@ -21,20 +21,10 @@ const WorkExperience = () => {
         setLoading(false);
       }
     };
-
     loadData();
   }, [context]);
 
-  // Loading State
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-60">
-        <div className="animate-spin h-12 w-12 border-2 border-blue-600 dark:border-blue-400 rounded-full border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (!context) return null;
+  if (loading || !context) return <Loading />;
 
   const { workExperince } = context;
 
