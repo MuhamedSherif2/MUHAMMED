@@ -1,4 +1,4 @@
-import { Context } from "@/context"
+import { Context } from "@/store/store"
 import { useContext, useState } from "react"
 
 const Contact = () => {

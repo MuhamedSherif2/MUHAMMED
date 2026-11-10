@@ -1,6 +1,6 @@
-export interface IApiResponse<T> {
-    message: string;
-    data: T;
+export interface ICategory {
+    _id: string;
+    title: string;
 }
 
 export interface IAboutMe {
@@ -8,8 +8,6 @@ export interface IAboutMe {
     experience: string;
     uniquePoint: string;
     careerGoals: string;
-    createdAt?: string;
-    updatedAt?: string;
 }
 
 export interface ICertifications {
@@ -18,17 +16,6 @@ export interface ICertifications {
     platform: string;
     year: string;
     certificateImage: string;
-    createdAt?: string;
-    updatedAt?: string;
-}
-
-export interface IContact {
-    name: string;
-    email: string;
-    phoneNumber: string;
-    message: string;
-    createdAt?: string;
-    updatedAt?: string;
 }
 
 export interface ICover {
@@ -38,70 +25,45 @@ export interface ICover {
     shortTagline: string;
     photo: string;
     callToAction: string;
-    createdAt?: string;
-    updatedAt?: string;
-}
-
-export interface ILoginResponse {
-    message: string;
-    token: string;
-    user: {
-        username: string;
-        email: string;
-        role: string;
-    };
-    createdAt?: string;
-    updatedAt?: string;
 }
 
 export interface IProject {
     _id: string;
+    slug: string;
     title: string;
     overview: string;
-    keyFeatures: string;
-    highlights: string;
+    keyFeatures: string[];
+    highlights: string[];
     projectType: string;
     image: string;
-    category:ICategory;
-    skills: IProjectSkill[];
+    category: ICategory;
+    skills: string[];
     hot: boolean;
     githubFront?: string;
     githubBack?: string;
     demo: string;
 }
 
-export interface IProjectSkill {
-    _id: string;
-    title: string;
-    image: string;
-}
-
 export interface IServices {
     _id: string;
     title: string;
     description: string;
-    image: string;
-    createdAt?: string;
-    updatedAt?: string;
+    points: string[];
+    image?: string;
 }
 
 export interface ISkills {
     _id: string;
     title: string;
-    image?: string;
+    image: string;
     category: ICategory;
-    createdAt?: string;
-    updatedAt?: string;
 }
 
 export interface ITestimonials {
     _id: string;
     authorName: string;
-    authorEmail: string;
+    authorRole?: string;
     message: string;
-    isShow: boolean;
-    createdAt?: string;
-    updatedAt?: string;
 }
 
 export interface IWorkExperince {
@@ -112,14 +74,5 @@ export interface IWorkExperince {
     startDate: string;
     endDate: string;
     description: string;
-    certificate: string;
-    createdAt?: string;
-    updatedAt?: string;
-}
-
-export interface ICategory {
-    _id: string;
-    title: string;
-    createdAt?: string;
-    updatedAt?: string;
+    certificate?: string;
 }

@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --surface: #f8f9fc;
+  --card: #ffffff;
+  --primary: #2563eb;
+  --accent: #7c3aed;
+  --success: #059669;
+  --text: #111827;
+  --muted: #4b5563;
+  --border: #e5e7eb;
+}
+
+.dark {
+  --background: #0b0e1d;
+  --surface: #121629;
+  --card: #1e2235;
+  --primary: #4a7cfe;
+  --accent: #7c3aed;
+  --success: #10b981;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #2a2f45;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-text;
+  }
+}
