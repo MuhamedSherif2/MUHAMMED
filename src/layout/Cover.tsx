@@ -1,15 +1,15 @@
 import { CoverStatic } from "@/lib/data/Cover"
 import { contacts } from '@/lib/StaticData';
-import HalftoneReveal from '@/components/HalftoneReveal';
-import SplitText from "@/components/SplitText"
+// import HalftoneReveal from '@/components/HalftoneReveal';
+// import SplitText from "@/components/SplitText"
 import Image from 'next/image';
 import Link from "next/link";
 
 function Cover() {
     const { callToAction, name, photo, shortTagline, title } = CoverStatic
-    const handleAnimationComplete = () => {
-        console.log('All letters have animated!');
-    };
+    // const handleAnimationComplete = () => {
+    //     console.log('All letters have animated!');
+    // };
 
     return (
         <section className="min-h-[70vh] w-full pt-16 pb-10  bg-[#F8F9FC] dark:bg-[#0F172A]">
