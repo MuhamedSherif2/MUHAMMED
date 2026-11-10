@@ -1,8 +1,6 @@
-import { Context } from "@/store/store"
-import { useContext, useState } from "react"
+import {  useState } from "react"
 
 const Contact = () => {
-  const context = useContext(Context)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,11 +22,6 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!context) {
-      setError("Context not available")
-      return
-    }
 
     if (!formData.name.trim()) {
       setError("Name is required")
@@ -72,8 +65,6 @@ const Contact = () => {
       formDataToSend.append("email", formData.email.trim())
       formDataToSend.append("phoneNumber", formData.phoneNumber.trim())
       formDataToSend.append("message", formData.message.trim())
-
-      await context.sendMessage(formDataToSend)
       
       setSuccess(true)
       
@@ -97,10 +88,6 @@ const Contact = () => {
     } finally {
       setLoading(false)
     }
-  }
-
-  if (!context) {
-    return <div className="text-[#4B5563] dark:text-[#94A3B8]">Error: Context not available</div>
   }
 
   return (

@@ -1,32 +1,18 @@
-import { useEffect, useState, useContext } from "react";
-import { Context } from "@/store";
+import { useState, } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 const Testimonials = () => {
-  const context = useContext(Context);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  
-  const testimonials = context?.showTestimonials || [];
-  const displayedTestimonials = testimonials.slice(0, 2);
-
-  useEffect(() => {
-    context?.portfolioActions.loadShowTestimonials?.();
-  }, [context]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!context?.userToken) {
-      setSubmitError("Please login to submit a testimonial");
-      return;
-    }
     
     setSubmitting(true);
     setSubmitError("");
@@ -37,9 +23,7 @@ const Testimonials = () => {
       formData.append("authorName", name);
       formData.append("authorEmail", email);
       formData.append("message", message);
-      
-      await context.portfolioActions.addNewTestimonial?.(formData);
-      
+            
       // Reset form
       setName("");
       setEmail("");
@@ -47,7 +31,6 @@ const Testimonials = () => {
       setSubmitSuccess(true);
       
       // Refresh testimonials
-      context?.portfolioActions.loadShowTestimonials?.();
       
     } catch (err: any) {
       console.error("Error submitting testimonial:", err);
@@ -169,7 +152,7 @@ const Testimonials = () => {
             </div>
 
             <div className="lg:w-[40%]">
-              <div className="space-y-6">
+              {/* <div className="space-y-6">
                 {displayedTestimonials.length > 0 ? (
                   displayedTestimonials.map((t: any) => (
                     <div
@@ -215,9 +198,9 @@ const Testimonials = () => {
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
               
-              {displayedTestimonials.length > 0 && testimonials.length > 2 && (
+              {/* {displayedTestimonials.length > 0 && testimonials.length > 2 && (
                 <div className="mt-6 text-center">
                   <button
                     onClick={() => {
@@ -228,7 +211,7 @@ const Testimonials = () => {
                     View all testimonials ({testimonials.length})
                   </button>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>
