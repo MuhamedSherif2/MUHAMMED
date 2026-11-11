@@ -9,7 +9,7 @@ export const SkillsStatic: ISkills[] = [
   { _id: 'typescript', title: 'TypeScript', image: "/skills/typescript.png", category: { _id: '1', title: 'Front-End' } },
   { _id: 'react', title: 'React.js', image: "/skills/react.png", category: { _id: '1', title: 'Front-End' } },
   { _id: 'nextjs', title: 'Next.js', image: "/skills/nextjs.png", category: { _id: '1', title: 'Front-End' } },
-  { _id: 'angular', title: 'Angular', image: "/skills/angular.png", category: { _id: '1', title: 'Front-End' } },
+  { _id: 'angular', title: 'Angular', image: "/skills/angular-new.webp", category: { _id: '1', title: 'Front-End' } },
   { _id: 'node', title: 'Node.js', image: "/skills/node.png", category: { _id: '2', title: 'Back-End' } },
   { _id: 'express', title: 'Express.js', image: "/skills/express.png", category: { _id: '2', title: 'Back-End' } },
   { _id: 'nest', title: 'NestJS', image: "/skills/nestjs.png", category: { _id: '2', title: 'Back-End', }, },

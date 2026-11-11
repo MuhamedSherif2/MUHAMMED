@@ -1,109 +1,16 @@
 import "@/style/global.css";
 import { Noto_Sans, Stack_Sans_Text } from "next/font/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Providers from "@/providers/providers";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
+import IntroScreen from "@/layout/IntroScreen";
 
-// export async function generateMetadata(): Promise<Metadata> {
-//   const locale = await getLocale();
-//   const faviconExists = existsSync(
-//     join(process.cwd(), "public", "favicon.ico"),
-//   );
-//   const appleTouchIconExists = existsSync(
-//     join(process.cwd(), "public", "apple-touch-icon.png"),
-//   );
-
-//   const icons: Metadata["icons"] = {};
-
-//   if (faviconExists) {
-//     icons.icon = [{ url: "/favicon.ico", type: "image/x-icon" }];
-//     icons.shortcut = [{ url: "/favicon.ico" }];
-//   }
-
-//   if (appleTouchIconExists) {
-//     icons.apple = [{ url: "/apple-touch-icon.png", sizes: "180x180" }];
-//   }
-
-//   return {
-//     metadataBase: new URL(siteUrl),
-//     title: "Khamato - Building & Finishing Materials Marketplace Egypt",
-//     description:
-//       "Khamato is Egypt's leading online marketplace for building and finishing materials. Shop 10,000+ products including cement, steel, electrical supplies, sanitary ware, paints, tiles, and decoration supplies. Fast delivery across all governorates. Secure payments. Best prices for contractors, architects, and homeowners.",
-//     authors: [
-//       { name: "Ahmed Doban", url: "https://ahmeddoban.vercel.app/" },
-//       { name: "O-Projects", url: "https://o-projects.org/" },
-//     ],
-//     creator: "O-Projects Development Team",
-//     publisher: "O-Projects",
-//     robots: {
-//       index: true,
-//       follow: true,
-//     },
-//     appleWebApp: {
-//       capable: true,
-//       title: "Khamato",
-//       statusBarStyle: "black-translucent",
-//     },
-//     alternates: {
-//       canonical: getCanonicalUrl(locale, "/"),
-//       languages: getLocaleAlternates("/"),
-//     },
-//     keywords: [
-//       // Primary keywords
-//       "building materials Egypt",
-//       "construction supplies",
-//       "finishing materials",
-//       "hardware store Egypt",
-//       "cement suppliers",
-//       "electrical supplies Cairo",
-//       "sanitary ware",
-//       "paints and coatings",
-//       "construction marketplace",
-
-//       // Product-specific keywords
-//       "building materials online",
-//       "construction supplies online",
-//       "cement price Egypt",
-//       "steel rebar suppliers",
-//       "paint stores Egypt",
-//       "tiles and marble",
-//       "plumbing supplies",
-//       "electrical wires",
-//       "bathroom fixtures",
-//       "kitchen materials",
-
-//       // Brand-related
-//       "Khamato",
-//       "building materials website",
-//       "construction e-commerce",
-//       "contractor supplies",
-//       "home improvement Egypt",
-
-//       // Location-based
-//       "construction materials Cairo",
-//       "building supplies Alexandria",
-//       "finishing materials Giza",
-//       "hardware stores Egypt",
-//       "building materials suppliers",
-
-//       // Audience-specific
-//       "contractor building materials",
-//       "architect supplies",
-//       "homeowner renovation",
-//       "construction wholesale",
-//       "building materials for contractors",
-
-//       // SEO long-tail
-//       "buy cement online Egypt",
-//       "order building materials online",
-//       "best construction material prices",
-//       "building and finishing marketplace",
-//       "construction material delivery",
-//     ],
-//     icons,
-//   };
-// }
+const siteUrl = "https://muhammed-mu.vercel.app";
+const name ="Muhamad Sherif";
+const title = `${name} | Full-Stack Web Developer (React, Next.js, Node.js)`;
+const description =
+    "Full-Stack Web Developer with 2 years of experience building fast, responsive websites and e-commerce platforms with React, Next.js, Node.js, and MongoDB. Available for freelance projects.";
 
 const notoSans = Noto_Sans({
     subsets: ["latin"],
@@ -119,15 +26,74 @@ const stackSans = Stack_Sans_Text({
 });
 
 export const metadata: Metadata = {
-    title: "MUHAMAD",
-    description: "MUHAMAD SHERIF Portfolio",
+    metadataBase: new URL(siteUrl),
+    title: {
+        default: title,
+        template: `%s | ${name}`,
+    },
+    description,
+    applicationName: `${name} Portfolio`,
+    authors: [{ name, url: siteUrl }],
+    creator: name,
+    keywords: [
+        "Muhamad Sherif",
+        "Full-Stack Web Developer",
+        "freelance web developer Egypt",
+        "React developer",
+        "Next.js developer",
+        "Node.js developer",
+        "MERN stack developer",
+        "e-commerce website development",
+        "web developer portfolio",
+    ],
+    alternates: { canonical: "/" },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
+    openGraph: {
+        type: "website",
+        url: siteUrl,
+        siteName: `${name} Portfolio`,
+        title,
+        description,
+        locale: "en_US",
+        images: [{ url: "/og-image.png", width: 1200, height: 630, alt: `${name}, Full-Stack Web Developer` }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: ["/og-image.png"],
+    },
+
+    icons: {
+        icon: [
+            { url: "/real-logo.png", type: "image/png" },
+        ],
+        apple: "/real-logo.png",
+        shortcut: "/real-logo.png",
+    },
 };
 
-export default function RootLayout({ children, }: { children: React.ReactNode; }) {
+export const viewport: Viewport = {
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+        { media: "(prefers-color-scheme: dark)", color: "#0B0E1D" },
+    ],
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" className={`${notoSans.variable} ${stackSans.variable}`} suppressHydrationWarning>
+        <html
+            lang="en"
+            className={`${notoSans.variable} ${stackSans.variable}`}
+            suppressHydrationWarning
+        >
             <body>
                 <Providers>
+                    <IntroScreen />
                     <Nav />
                     {children}
                     <Footer />
